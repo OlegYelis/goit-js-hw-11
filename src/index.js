@@ -45,7 +45,6 @@ const submitFormHandler = async evt => {
     }
     const cards = await res.data.hits;
     renderCards(cards);
-    loadMoreBtnEl.classList.remove('is-hidden');
   } catch (er) {
     console.log(er.message);
   }
@@ -91,6 +90,7 @@ const renderCards = cards => {
     );
   }
 
+  loadMoreBtnEl.classList.remove('is-hidden');
   galleryEl.innerHTML = '';
 
   galleryEl.insertAdjacentHTML('beforeend', cardTemplate(cards));
