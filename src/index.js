@@ -40,7 +40,9 @@ const submitFormHandler = async evt => {
     if (res.status !== 200) {
       throw new Error();
     }
-    Notify.success(`Hooray! We found ${res.data.totalHits} images.`);
+    if (res.data.totalHits > 0) {
+      Notify.success(`Hooray! We found ${res.data.totalHits} images.`);
+    }
     const cards = await res.data.hits;
     renderCards(cards);
   } catch (er) {
