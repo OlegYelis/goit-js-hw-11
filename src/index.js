@@ -27,7 +27,7 @@ const getCards = async (query, page) => {
 
 const submitFormHandler = async evt => {
   evt.preventDefault();
-
+  galleryEl.innerHTML = '';
   value = evt.currentTarget.elements.searchQuery.value.trim();
   page = 1;
 
@@ -91,8 +91,6 @@ const renderCards = cards => {
   }
 
   loadMoreBtnEl.classList.remove('is-hidden');
-  galleryEl.innerHTML = '';
-
   galleryEl.insertAdjacentHTML('beforeend', cardTemplate(cards));
 };
 
