@@ -45,10 +45,10 @@ const submitFormHandler = async evt => {
     }
     const cards = await res.data.hits;
     renderCards(cards);
+    loadMoreBtnEl.classList.remove('is-hidden');
   } catch (er) {
     console.log(er.message);
   }
-  loadMoreBtnEl.classList.remove('is-hidden');
   lightbox.refresh();
 };
 
