@@ -12,7 +12,6 @@ const BASE_OPTIONS =
 
 const formEl = document.querySelector('#search-form');
 const galleryEl = document.querySelector('.gallery');
-const loadMoreBtnEl = document.querySelector('.load-more');
 
 const getCards = async (query, page) => {
   try {
@@ -31,10 +30,6 @@ const submitFormHandler = async evt => {
   value = evt.currentTarget.elements.searchQuery.value.trim();
   page = 1;
 
-  if (!loadMoreBtnEl.classList.contains('is-hidden')) {
-    loadMoreBtnEl.classList.add('is-hidden');
-  }
-
   try {
     const res = await getCards(value, page);
     if (res.status !== 200) {
@@ -45,6 +40,7 @@ const submitFormHandler = async evt => {
     }
     const cards = await res.data.hits;
     renderCards(cards);
+    document.addEventListener('scroll', scrollHandler);
   } catch (er) {
     console.log(er.message);
   }
@@ -89,8 +85,6 @@ const renderCards = cards => {
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
-
-  loadMoreBtnEl.classList.remove('is-hidden');
   galleryEl.insertAdjacentHTML('beforeend', cardTemplate(cards));
 };
 
@@ -108,20 +102,36 @@ const loadMoreCardsHandler = async () => {
     const cards = await res.data.hits;
     loadMoreCards(cards);
     if (res.data.totalHits / 40 < page) {
-      loadMoreBtnEl.classList.add('is-hidden');
       throw new Error();
     }
+    // const { height: cardHeight } = document
+    //   .querySelector('.gallery')
+    //   .firstElementChild.getBoundingClientRect();
+
+    // window.scrollBy({
+    //   top: cardHeight * 2,
+    //   behavior: 'smooth',
+    // });
   } catch (er) {
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
+    document.removeEventListener('scroll', scrollHandler);
     console.log(er);
-    loadMoreBtnEl.classList.add('is-hidden');
   }
   lightbox.refresh();
 };
 
 formEl.addEventListener('submit', submitFormHandler);
-loadMoreBtnEl.addEventListener('click', loadMoreCardsHandler);
 
 var lightbox = new SimpleLightbox('.gallery a');
+
+const scrollHandler = evt => {
+  if (
+    evt.target.documentElement.scrollHeight -
+      (evt.target.documentElement.scrollTop + window.innerHeight) <
+    50
+  ) {
+    loadMoreCardsHandler();
+  }
+};

@@ -15,6 +15,7 @@ a {
   align-items: center;
   background-color: #3e56b2;
   padding: 10px 0 10px 0;
+  margin-bottom: 20px;
 }
 
 .search-form__input {
@@ -48,6 +49,7 @@ button {
   flex-direction: column;
   width: 400px;
   background-color: #f9f9f9;
+  border-radius: 10px;
   box-shadow: 3px 3px 10px silver;
 }
 
@@ -59,6 +61,7 @@ button {
   height: 266px;
   object-fit: cover;
   transition: transform var(--animation-duration) var(--timing-function);
+  border-radius: 10px 10px 0 0;
 }
 
 .info {
