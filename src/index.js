@@ -95,6 +95,7 @@ const loadMoreCards = cards => {
 const loadMoreCardsHandler = async () => {
   page += 1;
   try {
+    document.removeEventListener('scroll', scrollHandler);
     const res = await getCards(value, page);
     if (res.status !== 200) {
       throw new Error();
@@ -112,6 +113,7 @@ const loadMoreCardsHandler = async () => {
     //   top: cardHeight * 2,
     //   behavior: 'smooth',
     // });
+    document.addEventListener('scroll', scrollHandler);
   } catch (er) {
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
